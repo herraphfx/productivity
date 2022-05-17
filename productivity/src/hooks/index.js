@@ -7,6 +7,7 @@ const collatedTasksExist = () => {};
 
 export const useTasks = selectedProject =>{
     const [tasks, setTasks] = useState([]);
+    const [archivedTasks, setArchivedTasks] = useState([]);
 
     useEffect( () =>{
      let unsubscribe = firebase
@@ -43,11 +44,37 @@ export const useTasks = selectedProject =>{
             ? selectedProject === 'MONTH'
             : newTasks.filter(
                 task => moment(task.date, 'DD-MM-YYYY').diff(moment(), 'month') <= 30 &&
-                task.archived !== false
-            )
+                task.archived !== true)   
         );
+        setArchivedTasks(newTasks.filter(task => task.archived !== false));
         });
 
+        return () => unsubscribe();
     
     }, [ selectedProject ]);
+    return { tasks, archivedTasks};
+}
+
+
+//Add a project
+export const useProjects = () =>{
+    const[projects, setProjects] = useState([])
+//Fetch a project and refresh from database
+    useEffect(()=>{
+        firebase()
+        .collection('projects')
+        .where('userId,', '==', 'user01')
+        .orderBy('projectId')
+        .get()
+        .then(snapshot =>{
+            const allProject = snapshot.docs.map(project => ({
+                ...project.data(),
+                docId: project.id
+            }))
+            if(JSON.stringify(allProject) !== JSON.stringify(projects)){
+                setProjects(allProject);
+            }
+        })
+    }, [projects]);
+    return { projects, setProjects } 
 }
