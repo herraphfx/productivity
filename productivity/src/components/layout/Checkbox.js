@@ -1,3 +1,4 @@
+import React from 'react'
 import { firebase } from "../../firebase"
 
 export const Checkbox = ({id}) => {
@@ -13,7 +14,7 @@ export const Checkbox = ({id}) => {
     return(
         <div className="checkbox-holder"
         data-testid="checkbox-action"
-        onClick={() => archivedTask()}
+        onClick={() => archiveTask()}
         >
             <span className="checkbox"/>
         </div>

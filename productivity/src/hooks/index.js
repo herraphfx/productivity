@@ -3,7 +3,6 @@ import { firebase } from '../firebase'
 import { collatedTasksExist } from '../helpers';
 import moment from 'moment';
 
-const collatedTasksExist = () => {};
 
 export const useTasks = selectedProject =>{
     const [tasks, setTasks] = useState([]);
@@ -41,10 +40,10 @@ export const useTasks = selectedProject =>{
             )
             :newTasks.filter(task => task.archived !== true)
             //one month
-            ? selectedProject === 'MONTH'
-            : newTasks.filter(
-                task => moment(task.date, 'DD-MM-YYYY').diff(moment(), 'month') <= 30 &&
-                task.archived !== true)   
+            // ? selectedProject === 'MONTH'
+            // : newTasks.filter(
+            //     task => moment(task.date, 'DD-MM-YYYY').diff(moment(), 'month') <= 30 &&
+            //     task.archived !== true)   
         );
         setArchivedTasks(newTasks.filter(task => task.archived !== false));
         });
